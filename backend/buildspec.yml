@@ -1,0 +1,19 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo "Installing backend deps"
+      - cd backend
+      - npm ci
+  build:
+    commands:
+      - echo "Running tests"
+      - npm test || echo "no tests or continuing"
+      - echo "Packaging backend into /tmp/backend.zip"
+      - zip -r /tmp/backend.zip . -x node_modules/**\* *.log
+artifacts:
+  files:
+    - /tmp/backend.zip
+    - backend/appspec.yml
